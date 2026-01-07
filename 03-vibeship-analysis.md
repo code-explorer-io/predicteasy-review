@@ -49,10 +49,10 @@ Vibeship's scanner failed to identify the **most critical actual vulnerabilities
 
 | Missed Vulnerability | Severity | Description |
 |---------------------|----------|-------------|
-| Missing `.env` in `.gitignore` | **CRITICAL** | Environment secrets could be accidentally committed |
 | No authentication on `/api/admin/jobs` | **CRITICAL** | Anyone can access admin job history |
 | No authentication on mutation endpoints | **CRITICAL** | Watchlist, releases can be modified by anyone |
 | Cron secret bypass when env var unset | **CRITICAL** | All job endpoints accessible if CRON_SECRET not set |
+| Config API bypass in development | **CRITICAL** | App settings can be changed without auth |
 | Missing Clerk middleware.ts | **HIGH** | No centralized route protection |
 | Vulnerable xlsx dependency | **HIGH** | npm audit shows prototype pollution & ReDoS vulnerabilities |
 
@@ -141,10 +141,10 @@ After filtering false positives from Vibeship and combining with my analysis:
 
 | Severity | Vibeship Count | Real Count | Notes |
 |----------|----------------|------------|-------|
-| Critical | 10 | **5** | All real criticals from my analysis, not Vibeship |
+| Critical | 10 | **4** | All real criticals from my analysis, not Vibeship |
 | High | 5 | **2** | xlsx vulnerability + missing middleware |
-| Medium | 40 | **3** | Error messages + rate limiting + minor issues |
-| Low | 1 | **2** | Pagination validation + parseInt radix |
+| Medium | 40 | **2** | Error messages + rate limiting |
+| Low | 1 | **1** | Pagination validation |
 | Info | 285 | **~20** | Code quality items (===, non-null assertions, etc.) |
 
 ---

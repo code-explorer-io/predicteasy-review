@@ -11,7 +11,7 @@
 | Assessment | Result |
 |------------|--------|
 | Overall Security Status | ⚠️ **Needs Attention** |
-| Critical Issues Found | 5 |
+| Critical Issues Found | 4 |
 | High Issues Found | 2 |
 | Estimated Fix Time | 4-6 hours |
 | Exploitable Right Now? | Yes - authentication gaps |
@@ -34,7 +34,6 @@ A separate automated scan was run using Vibeship, an external security scanning 
 
 | Issue | Severity | One-Line Summary |
 |-------|----------|------------------|
-| Missing .env in .gitignore | CRITICAL | Secrets could be accidentally committed to Git |
 | No auth on admin API | CRITICAL | Anyone can view admin job history |
 | No auth on data endpoints | CRITICAL | Anyone can modify watchlist/releases |
 | Cron jobs unprotected | CRITICAL | Background jobs can be triggered by anyone |
@@ -68,19 +67,18 @@ A separate automated scan was run using Vibeship, an external security scanning 
 
 ### Immediate (Today)
 
-1. Add `.env*` to `.gitignore` (5 minutes)
-2. Create authentication middleware (30 minutes)
+1. Create authentication middleware (30 minutes)
 
 ### This Week
 
-3. Add auth checks to all admin/mutation endpoints (2 hours)
-4. Fix cron secret to fail closed (15 minutes)
-5. Add rate limiting to public APIs (1-2 hours)
+2. Add auth checks to all admin/mutation endpoints (2 hours)
+3. Fix cron secret to fail closed (15 minutes)
+4. Add rate limiting to public APIs (1-2 hours)
 
 ### When Convenient
 
-6. Replace xlsx library or accept risk (2 hours)
-7. Sanitize error messages (1 hour)
+5. Replace xlsx library or accept risk (2 hours)
+6. Sanitize error messages (1 hour)
 
 ---
 

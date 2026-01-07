@@ -22,7 +22,7 @@ Think of it like a house that's well-built, but some of the doors don't have loc
 
 ## What We Found
 
-### The Real Problems (5 Critical + 2 High)
+### The Real Problems (4 Critical + 2 High)
 
 #### 1. The Admin Area Has No Bouncer
 **What it means:** The admin pages and admin features (where you manage background jobs, settings, and releases) don't require you to log in. Anyone who knows the web address could access them.
@@ -51,16 +51,7 @@ Think of it like a house that's well-built, but some of the doors don't have loc
 
 ---
 
-#### 4. Secret Settings Might Get Leaked
-**What it means:** The app uses secret passwords and API keys (stored in a file called `.env`). The system that tracks file changes (Git) isn't told to ignore this file, so it could accidentally be uploaded publicly.
-
-**Real-world analogy:** Like keeping your house keys in an envelope labeled "KEYS" sitting on your front porch.
-
-**How to fix:** Add one line to the configuration telling Git to never upload that file.
-
----
-
-#### 5. A Library Has Known Flaws
+#### 4. A Library Has Known Flaws
 **What it means:** The app uses a third-party tool (xlsx) to read Excel files from Netflix. This tool has known security issues, though they're hard to exploit since the data comes from Netflix's official website.
 
 **Real-world analogy:** Like using a lock that has a known trick to pick it, but only a locksmith would know how.
@@ -101,17 +92,16 @@ The app does many things right:
 ## What Needs to Happen
 
 ### Today (30 minutes)
-1. Add the `.env` exclusion to prevent secrets from being uploaded
-2. Add the login requirement to admin pages
+1. Add the login requirement to admin pages
 
 ### This Week (3-4 hours)
-3. Add login requirements to all data modification features
-4. Fix the background job security
-5. Add protection against rapid-fire requests
+2. Add login requirements to all data modification features
+3. Fix the background job security
+4. Add protection against rapid-fire requests
 
 ### When Convenient (2-3 hours)
-6. Replace the Excel reading library
-7. Clean up error messages so they don't reveal internal details
+5. Replace the Excel reading library
+6. Clean up error messages so they don't reveal internal details
 
 ---
 

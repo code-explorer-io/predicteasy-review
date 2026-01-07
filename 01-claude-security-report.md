@@ -12,7 +12,7 @@ I analyzed the PredictEasy/polymarket-analysis-app repository and found **multip
 
 | Severity | Count |
 |----------|-------|
-| Critical | 5 |
+| Critical | 4 |
 | High | 2 |
 | Medium | 2 |
 | Low | 1 |
@@ -21,36 +21,7 @@ I analyzed the PredictEasy/polymarket-analysis-app repository and found **multip
 
 ## Critical Vulnerabilities
 
-### 1. Missing .env in .gitignore
-
-**Severity:** CRITICAL
-**Location:** `.gitignore`
-**CWE:** CWE-312 (Cleartext Storage of Sensitive Information)
-
-The `.gitignore` file does not include `.env` files, meaning environment secrets could be accidentally committed to the repository.
-
-**Current .gitignore (missing entries):**
-```
-# dependencies
-/node_modules
-/.pnp
-...
-# No .env patterns!
-```
-
-**Impact:** Database credentials, API keys (TMDB, Clerk), CRON_SECRET, and ADMIN_API_KEY could be exposed publicly if accidentally committed.
-
-**Remediation:** Add `.env*` patterns to `.gitignore` immediately:
-```
-.env
-.env.*
-.env.local
-.env.production
-```
-
----
-
-### 2. Missing Authentication on Admin API Routes
+### 1. Missing Authentication on Admin API Routes
 
 **Severity:** CRITICAL
 **Location:** `src/app/api/admin/jobs/route.ts`
@@ -93,7 +64,7 @@ export async function GET() {
 
 ---
 
-### 3. Missing Authentication on Data Modification Endpoints
+### 2. Missing Authentication on Data Modification Endpoints
 
 **Severity:** CRITICAL
 **Locations:**
@@ -128,7 +99,7 @@ export async function POST(request: NextRequest) {
 
 ---
 
-### 4. Weak Cron Secret Protection with Dev Bypass
+### 3. Weak Cron Secret Protection with Dev Bypass
 
 **Severity:** CRITICAL
 **Location:** `src/app/api/jobs/ingest-netflix/route.ts:20-28`
@@ -175,7 +146,7 @@ function verifyCronSecret(request: NextRequest): boolean {
 
 ---
 
-### 5. Admin Config API Key Bypass in Development
+### 4. Admin Config API Key Bypass in Development
 
 **Severity:** CRITICAL
 **Location:** `src/app/api/config/route.ts:52-56`
@@ -211,7 +182,7 @@ export async function PUT(request: NextRequest) {
 
 ## High Severity Vulnerabilities
 
-### 6. Missing Next.js Middleware for Route Protection
+### 5. Missing Next.js Middleware for Route Protection
 
 **Severity:** HIGH
 **Location:** No `middleware.ts` file exists
@@ -248,7 +219,7 @@ export const config = {
 
 ---
 
-### 7. Vulnerable xlsx Dependency
+### 6. Vulnerable xlsx Dependency
 
 **Severity:** HIGH
 **Location:** `package.json`
@@ -298,7 +269,7 @@ async function downloadAndParseXLSX<T>(url: string): Promise<T[]> {
 
 ## Medium Severity Issues
 
-### 8. Verbose Error Messages Expose Internal Details
+### 7. Verbose Error Messages Expose Internal Details
 
 **Severity:** MEDIUM
 **Location:** Multiple API routes
@@ -336,7 +307,7 @@ catch (error) {
 
 ---
 
-### 9. No Rate Limiting on Public APIs
+### 8. No Rate Limiting on Public APIs
 
 **Severity:** MEDIUM
 **Location:** All API endpoints
@@ -363,7 +334,7 @@ All API endpoints lack rate limiting:
 
 ## Low Severity Issues
 
-### 10. Insufficient Input Validation on Pagination
+### 9. Insufficient Input Validation on Pagination
 
 **Severity:** LOW
 **Location:** `src/app/api/titles/route.ts:20-21`
@@ -406,7 +377,6 @@ const pageSize = Number.isNaN(rawPageSize) ? 20 : Math.min(50, Math.max(1, rawPa
 
 | Priority | Issue | Effort | Impact |
 |----------|-------|--------|--------|
-| P0 | Add `.env*` to `.gitignore` | 5 min | Prevents credential exposure |
 | P0 | Create `middleware.ts` for Clerk auth | 30 min | Protects all admin routes |
 | P0 | Add auth to admin/mutation endpoints | 2 hrs | Prevents unauthorized data modification |
 | P1 | Require `CRON_SECRET` in production | 15 min | Prevents unauthorized job execution |
@@ -420,17 +390,7 @@ const pageSize = Number.isNaN(rawPageSize) ? 20 : Math.min(50, Math.max(1, rawPa
 
 ## Recommended Immediate Actions
 
-### 1. Add to `.gitignore`:
-```
-# Environment variables
-.env
-.env.*
-.env.local
-.env.development
-.env.production
-```
-
-### 2. Create `src/middleware.ts`:
+### 1. Create `src/middleware.ts`:
 ```typescript
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
@@ -453,7 +413,7 @@ export const config = {
 }
 ```
 
-### 3. Fix cron verification to fail closed:
+### 2. Fix cron verification to fail closed:
 ```typescript
 function verifyCronSecret(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
